@@ -1,0 +1,564 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Math_proj</title>
+<meta name="generator" content="MATLAB 25.1" />
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+<meta name="DC.date" content="2025-12-06" />
+<meta name="DC.source" content="Math_proj.m" />
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body data-mwthemeclass-status="false" class="mw-theme-light" style="zoom: 100%;">
+<div class="content">
+<pre class="codeinput">clc
+clear
+close <span class="string">all</span>
+
+<span class="comment">% 1. Load The Titanic Data</span>
+data = readtable(<span class="string">'titanic - titanic.csv'</span>);
+head(data);
+summary(data);
+</pre>
+<pre class="codeoutput">    PassengerId    Survived    Pclass                             Name                                 Sex        Age    SibSp    Parch      Ticket       Fare       Cabin       Embarked
+    ___________    ________    ______    _______________________________________________________    __________    ___    _____    _____    __________    ______    __________    ________
+
+         1            0          3       {'Braund, Mr. Owen Harris'                            }    {'male'  }     22      1        0             NaN      7.25    {0×0 char}     {'S'}  
+         2            1          1       {'Cumings, Mrs. John Bradley (Florence Briggs Thayer)'}    {'female'}     38      1        0             NaN    71.283    {'C85'   }     {'C'}  
+         3            1          3       {'Heikkinen, Miss. Laina'                             }    {'female'}     26      0        0             NaN     7.925    {0×0 char}     {'S'}  
+         4            1          1       {'Futrelle, Mrs. Jacques Heath (Lily May Peel)'       }    {'female'}     35      1        0       1.138e+05      53.1    {'C123'  }     {'S'}  
+         5            0          3       {'Allen, Mr. William Henry'                           }    {'male'  }     35      0        0      3.7345e+05      8.05    {0×0 char}     {'S'}  
+         6            0          3       {'Moran, Mr. James'                                   }    {'male'  }    NaN      0        0      3.3088e+05    8.4583    {0×0 char}     {'Q'}  
+         7            0          1       {'McCarthy, Mr. Timothy J'                            }    {'male'  }     54      0        0           17463    51.862    {'E46'   }     {'S'}  
+         8            0          3       {'Palsson, Master. Gosta Leonard'                     }    {'male'  }      2      3        1      3.4991e+05    21.075    {0×0 char}     {'S'}  
+
+
+&lt;strong&gt;data&lt;/strong&gt;: 891×12 table
+
+Variables:
+
+    &lt;strong&gt;PassengerId&lt;/strong&gt;: double
+    &lt;strong&gt;Survived&lt;/strong&gt;: double
+    &lt;strong&gt;Pclass&lt;/strong&gt;: double
+    &lt;strong&gt;Name&lt;/strong&gt;: cell array of character vectors
+    &lt;strong&gt;Sex&lt;/strong&gt;: cell array of character vectors
+    &lt;strong&gt;Age&lt;/strong&gt;: double
+    &lt;strong&gt;SibSp&lt;/strong&gt;: double
+    &lt;strong&gt;Parch&lt;/strong&gt;: double
+    &lt;strong&gt;Ticket&lt;/strong&gt;: double
+    &lt;strong&gt;Fare&lt;/strong&gt;: double
+    &lt;strong&gt;Cabin&lt;/strong&gt;: cell array of character vectors
+    &lt;strong&gt;Embarked&lt;/strong&gt;: cell array of character vectors
+
+Statistics for applicable variables:
+
+                   &lt;strong&gt;NumMissing&lt;/strong&gt;       &lt;strong&gt;Min&lt;/strong&gt;          &lt;strong&gt;Median&lt;/strong&gt;           &lt;strong&gt;Max&lt;/strong&gt;              &lt;strong&gt;Mean&lt;/strong&gt;              &lt;strong&gt;Std&lt;/strong&gt;      
+
+    &lt;strong&gt;PassengerId&lt;/strong&gt;         0               1            446             891               446          257.3538  
+    &lt;strong&gt;Survived   &lt;/strong&gt;         0               0              0               1            0.3838            0.4866  
+    &lt;strong&gt;Pclass     &lt;/strong&gt;         0               1              3               3            2.3086            0.8361  
+    &lt;strong&gt;Name       &lt;/strong&gt;         0                                                                                     
+    &lt;strong&gt;Sex        &lt;/strong&gt;         0                                                                                     
+    &lt;strong&gt;Age        &lt;/strong&gt;       177          0.4200             28              80           29.6991           14.5265  
+    &lt;strong&gt;SibSp      &lt;/strong&gt;         0               0              0               8            0.5230            1.1027  
+    &lt;strong&gt;Parch      &lt;/strong&gt;         0               0              0               6            0.3816            0.8061  
+    &lt;strong&gt;Ticket     &lt;/strong&gt;       230             693         236171         3101298        2.6032e+05        4.7161e+05  
+    &lt;strong&gt;Fare       &lt;/strong&gt;         0               0        14.4542        512.3292           32.2042           49.6934  
+    &lt;strong&gt;Cabin      &lt;/strong&gt;       687                                                                                     
+    &lt;strong&gt;Embarked   &lt;/strong&gt;         2                                                                                     
+
+</pre>
+<p>2. Missing Data Heatmap in a Plot</p>
+<pre class="codeinput">MissingData = sum(ismissing(data));
+
+<span class="comment">% Creating the heatmap plot</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Missing Data Heatmap'</span>);
+h = heatmap(MissingData);
+
+h.XDisplayLabels = data.Properties.VariableNames;
+ylabel(<span class="string">'Observations (Rows)'</span>);
+title(<span class="string">'Missing Data Pattern by Variable and Observation'</span>);
+xlabel(<span class="string">''</span>);
+
+h.Colormap = flipud(gray);
+h.ColorbarVisible = <span class="string">'off'</span>;
+</pre>
+<img vspace="5" hspace="5" src="Math_proj_01.png" alt="" /> <pre class="codeinput"><span class="comment">% 3. Remove unnecessary columns with too many missing values</span>
+data = removevars(data, {<span class="string">'Ticket'</span>, <span class="string">'Cabin'</span>, <span class="string">'Embarked'</span>,<span class="string">'Fare'</span>,<span class="string">'Parch'</span>,<span class="string">'SibSp'</span>});
+
+<span class="comment">% Remove rows where Age is missing</span>
+RowsToKeep = ~ismissing(data.Age);
+data = data(RowsToKeep, :);
+fprintf(<span class="string">'Number of rows after removing missing Age values: %d\n'</span>, size(data, 1));
+summary(data);
+</pre>
+<pre class="codeoutput">Number of rows after removing missing Age values: 714
+
+&lt;strong&gt;data&lt;/strong&gt;: 714×6 table
+
+Variables:
+
+    &lt;strong&gt;PassengerId&lt;/strong&gt;: double
+    &lt;strong&gt;Survived&lt;/strong&gt;: double
+    &lt;strong&gt;Pclass&lt;/strong&gt;: double
+    &lt;strong&gt;Name&lt;/strong&gt;: cell array of character vectors
+    &lt;strong&gt;Sex&lt;/strong&gt;: cell array of character vectors
+    &lt;strong&gt;Age&lt;/strong&gt;: double
+
+Statistics for applicable variables:
+
+                   &lt;strong&gt;NumMissing&lt;/strong&gt;       &lt;strong&gt;Min&lt;/strong&gt;        &lt;strong&gt;Median&lt;/strong&gt;       &lt;strong&gt;Max&lt;/strong&gt;          &lt;strong&gt;Mean&lt;/strong&gt;            &lt;strong&gt;Std&lt;/strong&gt;     
+
+    &lt;strong&gt;PassengerId&lt;/strong&gt;        0                1        445        891        448.5826        259.1195  
+    &lt;strong&gt;Survived   &lt;/strong&gt;        0                0          0          1          0.4062          0.4915  
+    &lt;strong&gt;Pclass     &lt;/strong&gt;        0                1          2          3          2.2367          0.8382  
+    &lt;strong&gt;Name       &lt;/strong&gt;        0                                                                         
+    &lt;strong&gt;Sex        &lt;/strong&gt;        0                                                                         
+    &lt;strong&gt;Age        &lt;/strong&gt;        0           0.4200         28         80         29.6991         14.5265  
+
+</pre>
+<p>4. Variation Measures (Range, Variance, StdDev)</p>
+<pre class="codeinput">numericVars = varfun(@isnumeric, data, <span class="string">'OutputFormat'</span>, <span class="string">'uniform'</span>);
+numericData = data{:, numericVars};
+vars = data.Properties.VariableNames(numericVars);
+
+numCols = numel(vars);
+
+Ranges = zeros(numCols,1);
+Variances = zeros(numCols,1);
+StdDevs = zeros(numCols,1);
+
+<span class="keyword">for</span> i = 1:numCols
+    col = numericData(:, i);
+    Ranges(i)    = range(col);
+    Variances(i) = var(col);
+    StdDevs(i)   = std(col);
+<span class="keyword">end</span>
+
+VariationTable = table(vars', Ranges, Variances, StdDevs);
+disp(VariationTable);
+</pre>
+<pre class="codeoutput">         Var1          Ranges    Variances    StdDevs
+    _______________    ______    _________    _______
+
+    {'PassengerId'}      890        67143      259.12
+    {'Survived'   }        1      0.24153     0.49146
+    {'Pclass'     }        2      0.70266     0.83825
+    {'Age'        }    79.58       211.02      14.526
+
+</pre>
+<p>5. Boxplots for Numeric Columns</p>
+<pre class="codeinput">figure(<span class="string">'Name'</span>, <span class="string">'Outlier Boxplot'</span>);
+boxplot(numericData);
+set(gca, <span class="string">'XTickLabel'</span>, vars);
+title(<span class="string">'Boxplots for Numeric Columns'</span>);
+</pre>
+<img vspace="5" hspace="5" src="Math_proj_02.png" alt="" /> <img vspace="5" hspace="5" src="Math_proj_03.png" alt="" /> <p>6. Calculate the mean survival rate by sex and display the results</p>
+<pre class="codeinput">survivalBySex = groupsummary(data, <span class="string">"Sex"</span>, <span class="string">"mean"</span>, <span class="string">"Survived"</span>);
+disp(survivalBySex);
+
+<span class="comment">% A graph for the mean survival rate by sex</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Survival Rate by Sex'</span>);
+bar(survivalBySex.mean_Survived);
+set(gca, <span class="string">'XTickLabel'</span>, survivalBySex.Sex);
+ylabel(<span class="string">'Survival Rate'</span>);
+title(<span class="string">'Survival Rate by Sex'</span>);
+</pre>
+<pre class="codeoutput">       Sex        GroupCount    mean_Survived
+    __________    __________    _____________
+
+    {'female'}       261           0.75479   
+    {'male'  }       453            0.2053   
+
+</pre>
+<img vspace="5" hspace="5" src="Math_proj_04.png" alt="" /> <img vspace="5" hspace="5" src="Math_proj_05.png" alt="" /> <p>7. The mean survival rate by class</p>
+<pre class="codeinput">figure(<span class="string">'Name'</span>,<span class="string">'Survival Rate by Class'</span>);
+
+survivalByClass = groupsummary(data, <span class="string">"Pclass"</span>, <span class="string">"mean"</span>, <span class="string">"Survived"</span>);
+
+bar(survivalByClass.mean_Survived * 100);
+set(gca, <span class="string">'XTickLabel'</span>, {<span class="string">'1st Class'</span>, <span class="string">'2nd Class'</span>, <span class="string">'3rd Class'</span>});
+ylabel(<span class="string">'Survival Rate (%)'</span>);
+title(<span class="string">'Survival Rate by Passenger Class'</span>);
+</pre>
+<img vspace="5" hspace="5" src="Math_proj_06.png" alt="" /> <pre class="codeinput"><span class="comment">% Categorize the age groups</span>
+ageBins = [0 12 18 30 45 60 Inf];
+ageLabels = {<span class="string">'Child (0-12)'</span>,<span class="string">'Teen (13-18)'</span>,<span class="string">'Young (19-30)'</span>,<span class="string">'Adult (31-45)'</span>,<span class="string">'Mature (46-60)'</span>, <span class="string">'Senior (60+)'</span>};
+data.AgeGroup = categorical(discretize(data.Age, ageBins, <span class="string">'categorical'</span>, ageLabels));
+
+head(data)
+
+<span class="comment">% 8. The mean survival rate by age group</span>
+meanSurvivalByAgeGroup = groupsummary(data, <span class="string">"AgeGroup"</span>, <span class="string">"mean"</span>, <span class="string">"Survived"</span>);
+disp(meanSurvivalByAgeGroup);
+
+<span class="comment">% A graph for the mean survival rate by age group</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Survival Rate by Age Group'</span>);
+bar(meanSurvivalByAgeGroup.mean_Survived);
+set(gca, <span class="string">'XTickLabel'</span>, meanSurvivalByAgeGroup.AgeGroup);
+ylabel(<span class="string">'Survival Rate'</span>);
+title(<span class="string">'Survival Rate by Age Group'</span>);
+</pre>
+<pre class="codeoutput">    PassengerId    Survived    Pclass                             Name                                 Sex        Age       AgeGroup   
+    ___________    ________    ______    _______________________________________________________    __________    ___    ______________
+
+         1            0          3       {'Braund, Mr. Owen Harris'                            }    {'male'  }    22     Young (19-30) 
+         2            1          1       {'Cumings, Mrs. John Bradley (Florence Briggs Thayer)'}    {'female'}    38     Adult (31-45) 
+         3            1          3       {'Heikkinen, Miss. Laina'                             }    {'female'}    26     Young (19-30) 
+         4            1          1       {'Futrelle, Mrs. Jacques Heath (Lily May Peel)'       }    {'female'}    35     Adult (31-45) 
+         5            0          3       {'Allen, Mr. William Henry'                           }    {'male'  }    35     Adult (31-45) 
+         7            0          1       {'McCarthy, Mr. Timothy J'                            }    {'male'  }    54     Mature (46-60)
+         8            0          3       {'Palsson, Master. Gosta Leonard'                     }    {'male'  }     2     Child (0-12)  
+         9            1          3       {'Johnson, Mrs. Oscar W (Elisabeth Vilhelmina Berg)'  }    {'female'}    27     Young (19-30) 
+
+       AgeGroup       GroupCount    mean_Survived
+    ______________    __________    _____________
+
+    Child (0-12)          68           0.57353   
+    Teen (13-18)          45           0.48889   
+    Young (19-30)        271           0.35055   
+    Adult (31-45)        215           0.42326   
+    Mature (46-60)        89           0.40449   
+    Senior (60+)          26           0.26923   
+
+</pre>
+<img vspace="5" hspace="5" src="Math_proj_07.png" alt="" /> <pre class="codeinput"><span class="comment">% 9. Bar Survival Rate by Sex, and PClass</span>
+survivalBySexClass = groupsummary(data, [<span class="string">"Sex"</span>, <span class="string">"Pclass"</span>], <span class="string">"mean"</span>, <span class="string">"Survived"</span>);
+
+<span class="comment">% Separate the data for each Pclass</span>
+pclass1_data = survivalBySexClass(survivalBySexClass.Pclass == 1, :);
+pclass2_data = survivalBySexClass(survivalBySexClass.Pclass == 2, :);
+pclass3_data = survivalBySexClass(survivalBySexClass.Pclass == 3, :);
+
+<span class="comment">% Get the survival rates for each class</span>
+y1 = pclass1_data.mean_Survived;
+y2 = pclass2_data.mean_Survived;
+y3 = pclass3_data.mean_Survived;
+
+<span class="comment">% Create the grouped bar chart by plotting each Pclass individually</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Survival Rate by Sex &amp; Pclass (Individual Bars)'</span>);
+hold <span class="string">on</span>;
+colors = get(groot, <span class="string">'defaultAxesColorOrder'</span>);
+
+<span class="comment">% Define the X-axis positions for the groups ('female' is 1, 'male' is 2)</span>
+groupPositions = 1:numel(pclass1_data.Sex);
+barWidth = 0.25;
+
+class1 = bar(groupPositions - barWidth, y1, barWidth, <span class="string">'FaceColor'</span>, colors(1,:), <span class="string">'DisplayName'</span>, <span class="string">'Pclass 1'</span>);
+class2 = bar(groupPositions, y2, barWidth, <span class="string">'FaceColor'</span>, colors(2,:), <span class="string">'DisplayName'</span>, <span class="string">'Pclass 2'</span>);
+class3 = bar(groupPositions + barWidth, y3, barWidth, <span class="string">'FaceColor'</span>, colors(3,:), <span class="string">'DisplayName'</span>, <span class="string">'Pclass 3'</span>);
+
+hold <span class="string">off</span>;
+
+<span class="comment">% Set X-axis labels to 'female' and 'male'</span>
+set(gca, <span class="string">'XTick'</span>, groupPositions, <span class="string">'XTickLabel'</span>, pclass1_data.Sex);
+ylabel(<span class="string">'Mean Survived'</span>);
+title(<span class="string">'Survival Rate by Sex &amp; Pclass'</span>);
+ylim([0 1.05]);
+legend <span class="string">show</span>;
+grid <span class="string">on</span>;
+</pre>
+<img vspace="5" hspace="5" src="Math_proj_08.png" alt="" /> <pre class="codeinput"><span class="comment">% 11. Survival Rate by Age Group &amp; Pclass</span>
+
+<span class="comment">% Categorize the age groups</span>
+ageBins = [0 12 18 30 45 60 Inf];
+ageLabels = {<span class="string">'Child (0-12)'</span>,<span class="string">'Teen (13-18)'</span>,<span class="string">'Young (19-30)'</span>,<span class="string">'Adult (31-45)'</span>,<span class="string">'Mature (46-60)'</span>, <span class="string">'Senior (60+)'</span>};
+
+data.AgeGroup = categorical(discretize(data.Age, ageBins,<span class="string">'categorical'</span>, ageLabels));
+
+<span class="comment">% Compute mean survival grouped by AgeGroup and Pclass</span>
+survivalAgeClass = groupsummary(data, [<span class="string">"AgeGroup"</span>,<span class="string">"Pclass"</span>], <span class="string">"mean"</span>, <span class="string">"Survived"</span>);
+
+<span class="comment">% Split data for each Pclass</span>
+p1 = survivalAgeClass(survivalAgeClass.Pclass == 1, :);
+p2 = survivalAgeClass(survivalAgeClass.Pclass == 2, :);
+p3 = survivalAgeClass(survivalAgeClass.Pclass == 3, :);
+
+<span class="comment">% Registered MATLAB colors</span>
+colors = get(groot, <span class="string">'defaultAxesColorOrder'</span>);
+
+<span class="comment">% Plot grouped bars</span>
+figure(<span class="string">'Name'</span>, <span class="string">'Survival Rate by Age Group &amp; Pclass'</span>);
+hold <span class="string">on</span>;
+
+groupPositions = 1:numel(p1.AgeGroup);
+barWidth = 0.25;
+
+bar(groupPositions - barWidth, p1.mean_Survived, barWidth,<span class="string">'FaceColor'</span>, colors(1,:), <span class="string">'DisplayName'</span>, <span class="string">'Pclass 1'</span>);
+bar(groupPositions, p2.mean_Survived, barWidth, <span class="string">'FaceColor'</span>, colors(2,:), <span class="string">'DisplayName'</span>, <span class="string">'Pclass 2'</span>);
+bar(groupPositions + barWidth, p3.mean_Survived, barWidth, <span class="string">'FaceColor'</span>, colors(3,:), <span class="string">'DisplayName'</span>, <span class="string">'Pclass 3'</span>);
+
+hold <span class="string">off</span>;
+
+<span class="comment">% Axis &amp; labels</span>
+set(gca, <span class="string">'XTick'</span>, groupPositions, <span class="string">'XTickLabel'</span>, p1.AgeGroup);
+ylabel(<span class="string">'Mean Survived'</span>);
+title(<span class="string">'Survival Rate by Age Group &amp; Pclass'</span>);
+legend <span class="string">show</span>;
+grid <span class="string">on</span>;
+ylim([0 1.05]);
+</pre>
+<img vspace="5" hspace="5" src="Math_proj_09.png" alt="" /> <p class="footer">
+<br />
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB® R2025a</a>
+<br />
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+clc
+clear
+close all
+
+% 1. Load The Titanic Data
+data = readtable('titanic - titanic.csv');
+head(data);
+summary(data);
+
+%%
+% 2. Missing Data Heatmap in a Plot
+MissingData = sum(ismissing(data));
+
+% Creating the heatmap plot
+figure('Name', 'Missing Data Heatmap');
+h = heatmap(MissingData);
+
+h.XDisplayLabels = data.Properties.VariableNames;
+ylabel('Observations (Rows)');
+title('Missing Data Pattern by Variable and Observation');
+xlabel(''); 
+
+h.Colormap = flipud(gray);
+h.ColorbarVisible = 'off'; 
+
+%%
+
+% 3. Remove unnecessary columns with too many missing values
+data = removevars(data, {'Ticket', 'Cabin', 'Embarked','Fare','Parch','SibSp'});
+
+% Remove rows where Age is missing
+RowsToKeep = ~ismissing(data.Age);
+data = data(RowsToKeep, :);
+fprintf('Number of rows after removing missing Age values: %d\n', size(data, 1));
+summary(data);
+
+%%
+% 4. Variation Measures (Range, Variance, StdDev)
+numericVars = varfun(@isnumeric, data, 'OutputFormat', 'uniform');
+numericData = data{:, numericVars};
+vars = data.Properties.VariableNames(numericVars);
+
+numCols = numel(vars);
+
+Ranges = zeros(numCols,1);
+Variances = zeros(numCols,1);
+StdDevs = zeros(numCols,1);
+
+for i = 1:numCols
+    col = numericData(:, i);
+    Ranges(i)    = range(col);
+    Variances(i) = var(col);
+    StdDevs(i)   = std(col);
+end
+
+VariationTable = table(vars', Ranges, Variances, StdDevs);
+disp(VariationTable);
+
+%%
+% 5. Boxplots for Numeric Columns
+figure('Name', 'Outlier Boxplot');
+boxplot(numericData);
+set(gca, 'XTickLabel', vars);
+title('Boxplots for Numeric Columns');
+
+%%
+% 6. Calculate the mean survival rate by sex and display the results
+survivalBySex = groupsummary(data, "Sex", "mean", "Survived");
+disp(survivalBySex);
+
+% A graph for the mean survival rate by sex
+figure('Name', 'Survival Rate by Sex');
+bar(survivalBySex.mean_Survived);
+set(gca, 'XTickLabel', survivalBySex.Sex);
+ylabel('Survival Rate');
+title('Survival Rate by Sex');
+
+%%
+% 7. The mean survival rate by class
+figure('Name','Survival Rate by Class');
+
+survivalByClass = groupsummary(data, "Pclass", "mean", "Survived");
+
+bar(survivalByClass.mean_Survived * 100);
+set(gca, 'XTickLabel', {'1st Class', '2nd Class', '3rd Class'});
+ylabel('Survival Rate (%)');
+title('Survival Rate by Passenger Class');
+
+%%
+
+% Categorize the age groups
+ageBins = [0 12 18 30 45 60 Inf];
+ageLabels = {'Child (0-12)','Teen (13-18)','Young (19-30)','Adult (31-45)','Mature (46-60)', 'Senior (60+)'};
+data.AgeGroup = categorical(discretize(data.Age, ageBins, 'categorical', ageLabels));
+
+head(data)
+
+% 8. The mean survival rate by age group
+meanSurvivalByAgeGroup = groupsummary(data, "AgeGroup", "mean", "Survived");
+disp(meanSurvivalByAgeGroup);
+
+% A graph for the mean survival rate by age group
+figure('Name', 'Survival Rate by Age Group');
+bar(meanSurvivalByAgeGroup.mean_Survived);
+set(gca, 'XTickLabel', meanSurvivalByAgeGroup.AgeGroup);
+ylabel('Survival Rate');
+title('Survival Rate by Age Group');
+
+%%
+
+% 9. Bar Survival Rate by Sex, and PClass
+survivalBySexClass = groupsummary(data, ["Sex", "Pclass"], "mean", "Survived");
+
+% Separate the data for each Pclass
+pclass1_data = survivalBySexClass(survivalBySexClass.Pclass == 1, :);
+pclass2_data = survivalBySexClass(survivalBySexClass.Pclass == 2, :);
+pclass3_data = survivalBySexClass(survivalBySexClass.Pclass == 3, :);
+
+% Get the survival rates for each class
+y1 = pclass1_data.mean_Survived;
+y2 = pclass2_data.mean_Survived;
+y3 = pclass3_data.mean_Survived;
+
+% Create the grouped bar chart by plotting each Pclass individually
+figure('Name', 'Survival Rate by Sex & Pclass (Individual Bars)');
+hold on;
+colors = get(groot, 'defaultAxesColorOrder'); 
+
+% Define the X-axis positions for the groups ('female' is 1, 'male' is 2)
+groupPositions = 1:numel(pclass1_data.Sex); 
+barWidth = 0.25; 
+
+class1 = bar(groupPositions - barWidth, y1, barWidth, 'FaceColor', colors(1,:), 'DisplayName', 'Pclass 1'); 
+class2 = bar(groupPositions, y2, barWidth, 'FaceColor', colors(2,:), 'DisplayName', 'Pclass 2');  
+class3 = bar(groupPositions + barWidth, y3, barWidth, 'FaceColor', colors(3,:), 'DisplayName', 'Pclass 3'); 
+
+hold off; 
+
+% Set X-axis labels to 'female' and 'male'
+set(gca, 'XTick', groupPositions, 'XTickLabel', pclass1_data.Sex); 
+ylabel('Mean Survived');
+title('Survival Rate by Sex & Pclass');
+ylim([0 1.05]); 
+legend show;
+grid on;
+
+%% 
+
+% 11. Survival Rate by Age Group & Pclass
+
+% Categorize the age groups
+ageBins = [0 12 18 30 45 60 Inf];
+ageLabels = {'Child (0-12)','Teen (13-18)','Young (19-30)','Adult (31-45)','Mature (46-60)', 'Senior (60+)'};
+
+data.AgeGroup = categorical(discretize(data.Age, ageBins,'categorical', ageLabels));
+
+% Compute mean survival grouped by AgeGroup and Pclass
+survivalAgeClass = groupsummary(data, ["AgeGroup","Pclass"], "mean", "Survived");
+
+% Split data for each Pclass
+p1 = survivalAgeClass(survivalAgeClass.Pclass == 1, :);
+p2 = survivalAgeClass(survivalAgeClass.Pclass == 2, :);
+p3 = survivalAgeClass(survivalAgeClass.Pclass == 3, :);
+
+% Registered MATLAB colors
+colors = get(groot, 'defaultAxesColorOrder'); 
+
+% Plot grouped bars
+figure('Name', 'Survival Rate by Age Group & Pclass');
+hold on;
+
+groupPositions = 1:numel(p1.AgeGroup);
+barWidth = 0.25;
+
+bar(groupPositions - barWidth, p1.mean_Survived, barWidth,'FaceColor', colors(1,:), 'DisplayName', 'Pclass 1');
+bar(groupPositions, p2.mean_Survived, barWidth, 'FaceColor', colors(2,:), 'DisplayName', 'Pclass 2');
+bar(groupPositions + barWidth, p3.mean_Survived, barWidth, 'FaceColor', colors(3,:), 'DisplayName', 'Pclass 3');
+
+hold off;
+
+% Axis & labels
+set(gca, 'XTick', groupPositions, 'XTickLabel', p1.AgeGroup);
+ylabel('Mean Survived');
+title('Survival Rate by Age Group & Pclass');
+legend show;
+grid on;
+ylim([0 1.05]);
+
+##### SOURCE END #####
+-->
+
+
+</body></html>
